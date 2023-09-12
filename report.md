@@ -49,4 +49,6 @@ VALUES (26, 12, 1, '2022-01-13'),
 (30, 14, 16, '2022-01-16');
 ```
 ![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/d12327bf-e49c-4edd-a70e-869b4a465ac1)  
+```
 
+```
