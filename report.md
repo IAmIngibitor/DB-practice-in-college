@@ -6,7 +6,7 @@
 ### №1
 ![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/3fe371de-f816-463d-9b04-a484dd19d00e)  
 ![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/4e83ca08-7ce4-457a-ad6f-5c4ce8ee7f78)  
-```
+```sql
 INSERT INTO "Order_details"(order_detail_id,"Product_id", "Quantity", "Subtotal")
 VALUES (1, 4, 2, 2 * (SELECT "Price" FROM "Products" WHERE "Product_id" = 4)),
 (1, 1, 5, 5 * (SELECT "Price" FROM "Products" WHERE "Product_id" = 1)),
@@ -22,7 +22,7 @@ VALUES (1, 4, 2, 2 * (SELECT "Price" FROM "Products" WHERE "Product_id" = 4)),
 ### №2  
 ## Задание 3 (12.09.23)  
 ### №1  
-```
+```sql
 INSERT INTO "person"("id", "name", "age","gender", "address")
 VALUES (15, 'Kirill', 24, 'male', 'Novosibirsk'),
 (16, 'Anton', 54, 'male', 'Moskow'),
@@ -32,7 +32,7 @@ VALUES (15, 'Kirill', 24, 'male', 'Novosibirsk'),
 ```
 ![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/908f2593-71ce-4ca5-bf30-a4ce7e34f828)  
   
-```
+```sql
 INSERT INTO "pizzeria"("id", "name", "rating")
 VALUES (12, '888Pizza', '2.3'),
 (13, 'Shredder Pizza', '3.8'),
@@ -42,7 +42,7 @@ VALUES (12, '888Pizza', '2.3'),
 ```
 ![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/66e560ff-0811-4b4e-9d02-99fe98b84529)  
   
-```
+```sql
 INSERT INTO "person_order"("id", "person_id", "menu_id","order_date")
 VALUES (26, 12, 1, '2022-01-13'),
 (27, 13, 4, '2022-01-13'),
@@ -52,7 +52,7 @@ VALUES (26, 12, 1, '2022-01-13'),
 ```
 ![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/d12327bf-e49c-4edd-a70e-869b4a465ac1)  
   
-```
+```sql
 INSERT INTO "menu"("id", "pizzeria_id", "pizza_name","price")
 VALUES (25, 13, 'cheese pizza', 900),
 (26, 14, 'pepperoni pizza', 1200),
@@ -61,7 +61,7 @@ VALUES (25, 13, 'cheese pizza', 900),
 ```
 ![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/9152264f-707e-4dc9-aeac-efd7e60d7b23)  
   
-```
+```sql
 insert into person_visits values (20, 7, 1, '2022-01-01');
 insert into person_visits values (21, 7, 4, '2022-01-01');
 insert into person_visits values (22, 8, 6, '2022-01-02');
@@ -77,14 +77,14 @@ insert into person_visits values (30, 12, 11, '2022-01-01');
 ![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/b9a03a41-5252-4003-8e5f-44cd53582477)    
   
 ### №2
-```
+```sql
 SELECT "name", "age" FROM "person"
 WHERE "address" = 'Kazan';
 ```
 ![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/6ef811cd-034d-40b0-b508-3e31bdbe298b)  
   
 ### №3
-```
+```sql
 SELECT "name", "age" FROM "person"
 WHERE "gender" = 'female'
 ORDER BY "name" ASC;
@@ -92,14 +92,14 @@ ORDER BY "name" ASC;
 ![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/b5ee5f5e-65da-4a6d-a74f-de80ea2802f6)  
   
 ### №4
-```
+```sql
 SELECT "name", "rating" FROM "pizzeria"
 WHERE "rating" > 3.5
 ORDER BY "rating" ASC;
 ```
 ![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/10519e79-c194-4766-bce5-45474ae03974)  
   
-```
+```sql
 SELECT "name", "rating" FROM "pizzeria"
 WHERE "rating" BETWEEN 3.5 AND 5
 ORDER BY "rating" ASC;
@@ -107,33 +107,63 @@ ORDER BY "rating" ASC;
 ![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/3f874d6e-2d6a-42d8-b4af-f7d7c2d8ddfc)  
   
 ### №5
-```
+```sql
 SELECT "person_id" FROM "person_visits"
 WHERE "visit_date" BETWEEN '2022-01-05' AND '2022-01-18';
 ```
 ![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/d4fd5a89-1ce8-4939-9077-69f29d098fa3)  
   
 ### №6
-```
+```sql
 SELECT "name" FROM "person" WHERE person.id IN
 (SELECT "person_id" FROM "person_order" WHERE "menu_id" = 1 OR "menu_id" = 3 OR "menu_id" = 7);
 ```
 ![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/99c5f8b9-e881-4f2c-bb62-391a3aa389f5)  
   
 ### №7
-```
+```sql
 SELECT EXISTS(SELECT * FROM "person" WHERE "name" = 'Peter');
 ```
 ![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/1863f1e5-b8c1-4c22-b37b-158f84d50f0c)  
   
-```
+```sql
 SELECT EXISTS(SELECT * FROM "person" WHERE "name" = 'KEter');
 ```
 ![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/39efd31d-4d48-44f0-9b54-fa9c99a11eb3)  
   
-
-
-
-
-
-
+## 4 Задание (13.09.23)
+### №1
+```sql
+SELECT "id", "pizza_name" FROM "menu"
+UNION
+SELECT "id", "name" FROM "person"
+ORDER BY "id", "pizza_name";
+```
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/2540bbc2-9800-4505-8b86-37840ae6bdf0)  
+  
+### №2
+```sql
+SELECT "pizza_name" FROM "menu"
+UNION
+SELECT "name" FROM "person"
+ORDER BY "pizza_name";
+```
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/4044b81a-ff34-4429-9c50-e48bd113c93d)  
+  
+### №3
+```sql
+SELECT "person_id" FROM "person_order" 
+WHERE "order_date" IN (SELECT "visit_date" FROM "person_visits")
+ORDER BY "person_id" DESC;
+```
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/41371702-9d30-4924-b6ef-e0863cd0ce71)  
+  
+### №4
+```sql
+SELECT ABS (
+	(SELECT COUNT("person_id") FROM "person_order" WHERE "order_date" = '2022-01-07') -
+	(SELECT COUNT("person_id") FROM "person_visits" WHERE "visit_date" = '2022-01-07')
+);
+```
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/a3297c2c-3d8a-4607-9988-57db48d0f549)  
+  
