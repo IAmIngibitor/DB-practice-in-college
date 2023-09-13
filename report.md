@@ -134,8 +134,7 @@ SELECT EXISTS(SELECT * FROM "person" WHERE "name" = 'KEter');
 ## 4 Задание (13.09.23)
 ### №1
 ```sql
-SELECT "id", "pizza_name" FROM "menu"
-UNION
+SELECT "id", "pizza_name" FROM "menu" UNION
 SELECT "id", "name" FROM "person"
 ORDER BY "id", "pizza_name";
 ```
