@@ -166,3 +166,75 @@ SELECT ABS (
 ```
 ![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/a3297c2c-3d8a-4607-9988-57db48d0f549)  
   
+## 5 Задание (19.09.23)
+###  №1
+```sql
+SELECT person.id, person.name, "age", "gender", "address", pizzeria.id, pizzeria.name, "rating" FROM "person", "pizzeria"
+ORDER BY person.id ASC;
+```
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/cd7852d8-bb8b-4a73-bd1d-ea443e765312)  
+  
+```sql
+SELECT person.id, person.name, "age", "gender", "address", pizzeria.id, pizzeria.name, "rating" FROM "person", "pizzeria"
+ORDER BY pizzeria.id ASC;
+```
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/fefa7b91-079e-493c-8f94-6b5ca89306e9)  
+  
+### №2
+```sql
+SELECT "order_date" AS action_date, "name" FROM "person_order", "person"
+WHERE "order_date" IN (SELECT "visit_date" FROM "person_visits") AND person_order.person_id = person.id
+ORDER BY "order_date" ASC;
+```
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/4c0fbea1-c9ae-4eb2-98bb-0276835a4291)  
+  
+```sql
+SELECT "order_date" AS action_date, "name" FROM "person_order", "person"
+WHERE "order_date" IN (SELECT "visit_date" FROM "person_visits") AND person_order.person_id = person.id
+ORDER BY "name" DESC;
+```
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/1d870f57-6463-48bc-8420-67746fd87c88)  
+  
+### №3
+```sql
+SELECT "order_date", ("name" || ' (age:' || "age" || ')') AS person_information FROM "person_order"
+JOIN "person" ON "person_id" = person.id
+ORDER BY "order_date" ASC, "person_information" ASC;
+```
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/2bbeb2c0-7cba-499c-b62d-fa2e125be9be)  
+  
+### №4
+```sql
+SELECT "order_date", ("name" || ' (age:' || "age" || ')') AS person_information FROM "person_order" NATURAL JOIN "person"
+ORDER BY "order_date" ASC, "person_information" ASC;
+```
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/cd8babdb-b348-4ff3-ba20-f8a47ca4cb00)  
+  
+### №5
+#### IN
+```sql
+SELECT "name" FROM "pizzeria"
+WHERE "id" NOT IN
+(SELECT "pizzeria_id" FROM "person_visits");
+```
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/a98d93c6-aefc-49e5-b91a-4052383de8d6)  
+#### EXISTS
+```sql
+SELECT "name" FROM "pizzeria"
+WHERE NOT EXISTS
+(SELECT * FROM "person_visits" WHERE pizzeria.id = "pizzeria_id");
+```
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/1f50bcd3-0eba-49fb-998c-c82265eda52f)  
+  
+### №6
+```sql
+SELECT person.name AS person_name, menu.pizza_name, pizzeria.name AS pizzeria_name FROM "person_order"
+JOIN "person" ON person.id = person_order.person_id
+LEFT JOIN "menu" ON menu.id = person_order.menu_id
+LEFT JOIN "pizzeria" ON pizzeria.id = menu.pizzeria_id
+ORDER BY "person_name", "pizza_name", "pizzeria_name";
+```
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/dccc2a86-0537-4d4b-a9c7-41c9285a34fc)  
+  
+  
+
