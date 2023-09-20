@@ -264,5 +264,23 @@ ORDER BY "person_name", "visit_date", "pizzeria_name";
   
 ### №4
 ```sql
-
+WITH "m" AS (
+	SELECT "missing_date"::date FROM generate_series ('2022-01-01'::timestamp, '2022-01-10', '1 day') AS "missing_date"
+)
+SELECT "missing_date" FROM "m"
+LEFT JOIN "person_visits" ON "visit_date" = "missing_date"
+WHERE "visit_date" IS NULL;
 ```
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/b0c27a35-cfa0-4eb9-b69c-533e74d16f6f)  
+  
+### №5
+```sql
+SELECT menu.pizza_name, pizzeria.name AS pizzeria_name, menu.price FROM "menu"
+JOIN "pizzeria" ON pizzeria.id = menu.pizzeria_id
+WHERE "pizza_name" = 'pepperoni pizza' OR "pizza_name" = 'mushroom pizza'
+ORDER BY "pizza_name", "pizzeria_name";
+```
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/eb5e09ae-40b3-4794-81c4-9bcd7401f89f)  
+  
+
+  
