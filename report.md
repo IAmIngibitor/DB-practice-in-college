@@ -236,5 +236,33 @@ ORDER BY "person_name", "pizza_name", "pizzeria_name";
 ```
 ![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/dccc2a86-0537-4d4b-a9c7-41c9285a34fc)  
   
+## 6 Задание (20.09.23)
+### №1
+```sql
+SELECT "name", "rating" FROM "pizzeria"
+LEFT JOIN "person_visits" ON "pizzeria_id" = pizzeria.id
+WHERE "pizzeria_id" IS NULL;
+```
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/aee05cf9-78bc-4198-a1c3-90561c4598a1)  
+### №2
+```sql
+SELECT missing_date::date FROM generate_series ('2022-01-01'::timestamp, '2022-01-10', '1 day') AS "missing_date"
+LEFT JOIN "person_visits" ON "visit_date" = "missing_date"
+WHERE "visit_date" IS NULL;
+```
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/6c0f093f-046a-4c3e-a780-1cf086ae47e9)  
   
+### №3
+```sql
+SELECT COALESCE (person.name, '-') AS person_name, COALESCE (person_visits.visit_date, NULL) AS visit_date, COALESCE (pizzeria.name, '-') AS pizzeria_name 
+FROM "person_visits"
+RIGHT JOIN "person" ON person.id = person_visits.person_id
+FULL JOIN "pizzeria" ON pizzeria.id = person_visits.pizzeria_id
+ORDER BY "person_name", "visit_date", "pizzeria_name";
+```
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/cb87cd2c-0b41-4fef-af02-6649ccadb024)  
+  
+### №4
+```sql
 
+```
