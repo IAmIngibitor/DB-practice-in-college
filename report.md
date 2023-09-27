@@ -282,5 +282,4 @@ ORDER BY "pizza_name", "pizzeria_name";
 ```
 ![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/eb5e09ae-40b3-4794-81c4-9bcd7401f89f)  
   
-
-  
+## 7 Задание (26.09.23)(Сделан)
