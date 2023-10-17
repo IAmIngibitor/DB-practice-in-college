@@ -68,8 +68,8 @@ FROM  menu m
 INNER JOIN pizzeria pz ON m.pizzeria_id = pz.id
 ORDER BY 1,2;
 ```
-BEFORE
+#### BEFORE  
 ![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/58cdf710-447e-48fd-a4b7-ece6def72494)  
-AFTER
+#### AFTER  
 ![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/05e73017-2299-4f66-965d-649a22c7575d)
 
