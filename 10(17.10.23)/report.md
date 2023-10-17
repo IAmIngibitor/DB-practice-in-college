@@ -35,3 +35,41 @@ SELECT person_id, menu_id,order_date
 FROM person_order
 WHERE person_id = 8 AND menu_id = 19;
 ```
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/a9ec42fa-4b5d-4451-b640-048d493684e9)  
+  
+## №5
+```sql
+CREATE UNIQUE INDEX idx_menu_unique ON menu(pizzeria_id, pizza_name);
+
+EXPLAIN ANALYZE
+SELECT pizzeria_id, pizza_name FROM menu
+```
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/2f2f9707-2ddd-4bf9-89f9-0f01e732b97f)  
+  
+## №6
+```sql
+CREATE UNIQUE INDEX idx_person_order_order_date ON person_order(person_id, menu_id) WHERE order_date = '2022-01-01';
+
+EXPLAIN ANALYZE
+SELECT person_id, menu_id FROM person_order
+WHERE order_date = '2022-01-01'
+```
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/1f0e15db-f5c7-4920-a7dd-4e4b318ccc4a)  
+  
+## №7
+```sql
+CREATE INDEX idx_1 ON pizzeria(id, rating);
+
+EXPLAIN ANALYZE
+SELECT
+    m.pizza_name AS pizza_name,
+    max(rating) OVER (PARTITION BY rating ORDER BY rating ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS k
+FROM  menu m
+INNER JOIN pizzeria pz ON m.pizzeria_id = pz.id
+ORDER BY 1,2;
+```
+BEFORE
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/58cdf710-447e-48fd-a4b7-ece6def72494)  
+AFTER
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/05e73017-2299-4f66-965d-649a22c7575d)
+
