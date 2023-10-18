@@ -56,12 +56,46 @@ WHERE category != 'Electronics'
   
 ## №5
 ```sql
+DROP VIEW IF EXISTS v_avg_order;
 
+CREATE VIEW v_avg_order AS (
+	WITH sum_order_id AS (
+		SELECT ord.order_id, ord.customer_id, ord.quantity, SUM(prd.price) AS summa FROM orders ord
+		JOIN products prd ON prd.product_id = ord.product_id
+		GROUP BY ord.order_id
+	), avg_sum_customer AS (
+		SELECT soid.customer_id, ROUND(AVG(soid.summa), 2) AS avg_summa FROM sum_order_id soid
+		GROUP BY soid.customer_id
+	), avg_all_sum AS (
+		SELECT ROUND(AVG(soid.summa), 2) AS avg_all FROM sum_order_id soid
+	)
+	
+	SELECT cus.first_name, cus.last_name, ascus.avg_summa, (ascus.avg_summa - (SELECT avg_all FROM avg_all_sum)) AS difference FROM avg_sum_customer ascus
+	JOIN customers cus ON cus.customer_id = ascus.customer_id
+	JOIN sum_order_id soid ON soid.customer_id = ascus.customer_id
+	GROUP BY cus.first_name, cus.last_name, ascus.avg_summa
+);
+
+SELECT * FROM v_avg_order
 ```
-
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/cba807c1-1fa8-4cbe-b33a-6d6c0b629d26)  
+  
 ## №6
 ```sql
+-- WORK IN PROGRESS
 
+WITH customer_max_min AS (
+	SELECT ord.customer_id, MAX(ord.order_date) AS max_date, MIN(ord.order_date) AS min_date FROM orders ord
+	GROUP BY ord.customer_id
+), range_max_min AS(
+	SELECT cusxn.customer_id, (cusxn.max_date - cusxn.min_date) AS range FROM customer_max_min cusxn
+)
+
+SELECT cus.first_name, cus.last_name, MAX(ord.order_date), MAX(ord.order_date), MAX(rgxn.range) FROM orders ord
+JOIN range_max_min rgxn ON rgxn.customer_id = ord.customer_id
+JOIN customers cus ON cus.customer_id = ord.customer_id
+GROUP BY cus.first_name, cus.last_name
+HAVING (SELECT MAX(rgxn.range) FROM range_max_min rgxn)
 ```
 
 ## №7
