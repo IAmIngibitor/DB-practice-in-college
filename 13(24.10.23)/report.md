@@ -80,15 +80,40 @@ ORDER BY 1
   
 ## №7
 ```sql
+WITH fav_rest_order AS (
+	SELECT pzz.name, COUNT(pd.id) AS count_of_orders FROM pizzeria pzz
+	JOIN menu ON menu.pizzeria_id = pzz.id
+	JOIN person_order pd ON pd.menu_id = menu.id
+	GROUP BY 1
+	ORDER BY count_of_orders DESC
+)
 
+SELECT pzz.name, fro.count_of_orders, ROUND(AVG(menu.price), 2) AS avg, MAX(menu.price), MIN(menu.price) FROM pizzeria pzz
+JOIN fav_rest_order fro ON fro.name = pzz.name
+JOIN menu ON menu.pizzeria_id = pzz.id
+GROUP BY 1, 2
+ORDER BY 1
 ```
-
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/ee97efaf-382d-4f44-8dad-de7d60a7e530)  
+  
 ## №8
 ```sql
-
+SELECT ROUND(AVG(pzz.rating), 4) FROM pizzeria pzz
 ```
-
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/9000bd94-b19c-4683-9300-078eddfb9b00)  
+  
 ## №9
 ```sql
 
 ```
+
+## №10
+```sql
+WITH formula_average AS (
+	SELECT p.address, (MAX(p.age) - (MIN(p.age) / MAX(p.age))) AS formula, ROUND(AVG(p.age), 2) AS average FROM person p
+	GROUP BY 1
+)
+
+SELECT fa.address, fa.formula, fa.average, (fa.formula>fa.average) AS comparison FROM formula_average fa
+```
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/67b180e8-89b2-4cbf-9b33-87fd5cf01832)  
