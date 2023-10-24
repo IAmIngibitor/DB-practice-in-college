@@ -82,32 +82,41 @@ SELECT * FROM v_avg_order
   
 ## №6
 ```sql
--- WORK IN PROGRESS
-
-WITH customer_max_min AS (
-	SELECT ord.customer_id, MAX(ord.order_date) AS max_date, MIN(ord.order_date) AS min_date FROM orders ord
-	GROUP BY ord.customer_id
-), range_max_min AS(
-	SELECT cusxn.customer_id, (cusxn.max_date - cusxn.min_date) AS range FROM customer_max_min cusxn
+WITH customer_orders AS (
+	SELECT * FROM (SELECT ord.customer_id, ord.order_date, row_number() over(partition by ord.customer_id order by ord.order_date DESC) as rn FROM orders ord) cus_ord
+	WHERE rn < 3
+	
+), max_range_order AS (
+	SELECT csod.customer_id, (MAX(csod.order_date) - MIN(csod.order_date)) AS order_range FROM customer_orders csod
+	GROUP BY 1
 )
 
-SELECT cus.first_name, cus.last_name, MAX(ord.order_date), MAX(ord.order_date), MAX(rgxn.range) FROM orders ord
-JOIN range_max_min rgxn ON rgxn.customer_id = ord.customer_id
-JOIN customers cus ON cus.customer_id = ord.customer_id
-GROUP BY cus.first_name, cus.last_name
-HAVING (SELECT MAX(rgxn.range) FROM range_max_min rgxn)
+SELECT cus.first_name, cus.last_name, MAX(mro.order_range) FROM max_range_order mro
+JOIN customers cus ON cus.customer_id = mro.customer_id
+GROUP BY 1, 2
+HAVING MAX(mro.order_range) = (SELECT MAX(mro.order_range) FROM max_range_order mro)
 ```
-
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/c616b4e5-eca5-4ae9-9588-70a26c151c31)  
+  
 ## №7
 ```sql
-
+SELECT cus.first_name, cus.last_name FROM customers cus
+LEFT JOIN orders ord ON ord.customer_id = cus.customer_id
+WHERE ord.order_date BETWEEN '2023-08-23' AND '2023-10-23'
 ```
-
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/bb570892-3b3b-4108-8b4b-7f47291cb59b)  
+  
 ## №8
 ```sql
+UPDATE products
+SET price = price - (price * 10 / 100)
+WHERE category = 'Clothing';
 
+SELECT * FROM products
+WHERE category = 'Clothing'
 ```
-
+![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/d256a9a1-83ff-44ff-ae52-eac80f331393)  
+  
 ## №9
 ```sql
 
