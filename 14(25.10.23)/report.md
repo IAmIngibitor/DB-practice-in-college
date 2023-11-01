@@ -1,5 +1,6 @@
 ## Приложение: потоковый сервис музыки
 ### Схема баз данных
-![123 drawio](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/06372915-ef11-48ba-942f-c961f85a15da)
+![diagram drawio (1) drawio](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/7107964d-9ac2-4a98-b013-e00755af3ffb)
+
 
 
