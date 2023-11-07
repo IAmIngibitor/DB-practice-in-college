@@ -238,5 +238,32 @@ DROP VIEW IF EXISTS v_favorite_music_info;
 CREATE VIEW v_favorite_music_info AS 
 	SELECT us.id AS user_id, us.nickname AS user_nickname, ml.title AS song_title FROM users us
 	JOIN favorites_music fvm ON fvm.user_id = us.id
-	JOIN music_list ml ON ml.id = fvm.song_id
+	JOIN music_list ml ON ml.id = fvm.song_id;
+
+DROP VIEW IF EXISTS v_playlists_song_popularity;
+CREATE VIEW v_playlists_song_popularity AS 
+	SELECT ml.title AS song_title, COUNT(*) FILTER (WHERE pm.song_id = ml.id) AS added_to_playlists FROM music_list ml
+	JOIN playlist_music pm ON pm.song_id = ml.id
+	GROUP BY 1
+	ORDER BY 2 DESC;
+
+DROP VIEW IF EXISTS v_favorites_song_popularity;
+CREATE VIEW v_favorites_song_popularity AS 
+	SELECT ml.title AS song_title, COUNT(*) FILTER (WHERE fvm.song_id = ml.id) AS added_to_favorites FROM music_list ml
+	JOIN favorites_music fvm ON fvm.song_id = ml.id
+	GROUP BY 1
+	ORDER BY 2 DESC;
+
+-- MATERIALISED VIEWS
+
+DROP MATERIALIZED VIEW IF EXISTS mv_music_info;
+CREATE MATERIALIZED VIEW mv_music_info AS 
+	SELECT ml.id AS music_id, ml.title AS music_title, mg.title AS music_genre, ath.nickname AS author_nickname FROM music_list ml
+	JOIN music_genre mg ON mg.id = ml.genre_id
+	JOIN authors ath ON ath.id = ml.author_id;
+
+DROP MATERIALIZED VIEW IF EXISTS mv_vip_subscribers;
+CREATE MATERIALIZED VIEW mv_vip_subscribers AS 
+	SELECT * FROM users
+	WHERE vip_subscriber = 'true'
 ```
