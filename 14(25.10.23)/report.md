@@ -218,6 +218,25 @@ INSERT INTO playlist_music VALUES (26, 1, 2);
 INSERT INTO playlist_music VALUES (27, 1, 8);
 INSERT INTO playlist_music VALUES (28, 1, 9);
 ```
+#### VIEWS
+```sql
+-- VIEWS
 
+DROP VIEW IF EXISTS v_music_info;
+CREATE VIEW v_music_info AS 
+	SELECT ml.id AS music_id, ml.title AS music_title, mg.title AS music_genre, ath.nickname AS author_nickname FROM music_list ml
+	JOIN music_genre mg ON mg.id = ml.genre_id
+	JOIN authors ath ON ath.id = ml.author_id;
 
-
+DROP VIEW IF EXISTS v_playlists_info;
+CREATE VIEW v_playlists_info AS 
+	SELECT pls.id AS playlist_id, pls.title AS playlist_title, ml.title AS song_title FROM playlists pls
+	JOIN playlist_music pm ON pm.playlist_id = pls.id
+	JOIN music_list ml ON ml.id = pm.song_id;
+	
+DROP VIEW IF EXISTS v_favorite_music_info;
+CREATE VIEW v_favorite_music_info AS 
+	SELECT us.id AS user_id, us.nickname AS user_nickname, ml.title AS song_title FROM users us
+	JOIN favorites_music fvm ON fvm.user_id = us.id
+	JOIN music_list ml ON ml.id = fvm.song_id
+```
