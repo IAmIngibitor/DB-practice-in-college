@@ -21,4 +21,7 @@ GROUP BY 1, 2, 3, 5, 6, tmu.last_rate_to_usd
 ORDER BY 1 DESC, 2 ASC, 3 ASC
 ```
 ![image](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/4e377485-98a1-4e26-897f-f4e8215a6e6d)  
+### №2
+```sql
 
+```
