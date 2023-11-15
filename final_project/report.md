@@ -75,6 +75,12 @@ CREATE TABLE playlist_music
 	FOREIGN KEY (playlist_id) REFERENCES playlists(id),
 	FOREIGN KEY (song_id) REFERENCES music_list(id)
 );
+
+CREATE TABLE author_auditions (
+	author_id bigint NOT NULL,
+	auditions bigint NOT NULL DEFAULT 0,
+	FOREIGN KEY (author_id) REFERENCES authors(id)
+);
 ```
 #### INSERTS VALUES
 ```sql
