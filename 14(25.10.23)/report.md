@@ -1,6 +1,6 @@
 ## Приложение: потоковый сервис музыки
 ### Схема баз данных
-![music_service](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/3edc8e7e-7deb-4db2-bbba-c811786360f8)
+![music_service](https://github.com/IAmIngibitor/DB-practice-in-college/assets/109351663/93387271-b333-476e-b962-b68487cc44b3)
 ### SQL
 #### CREATE TABLES
 ```sql
