@@ -302,27 +302,28 @@ SELECT author_nickname, song_title FROM tmp_limit_3;
 
 -- insert new row in author_auditions table after insert in author table
 
-CREATE OR REPLACE FUNCTION fnc_after_new_author_inserts(ath_id bigint = 0) RETURNS trigger AS $$trg_after_new_author_insert$$
-INSERT INTO author_auditions (author_id)
-SELECT NEW.*;
+CREATE OR REPLACE FUNCTION fnc_after_new_author_inserts() RETURNS trigger AS $trg_after_new_author_insert$
+BEGIN
+INSERT INTO author_auditions(author_id)
+SELECT NEW.id;
 RETURN NULL;
 END;
-$$trg_after_new_author_insert$$ LANGUAGE plpgsql;
+$trg_after_new_author_insert$ LANGUAGE 'plpgsql';
 
 CREATE TRIGGER trg_after_new_author_insert AFTER INSERT ON authors
 	FOR EACH ROW EXECUTE FUNCTION fnc_after_new_author_inserts();
 	
 -- update auditions column from the corresponding author after insert his song in favorites
 
-CREATE OR REPLACE FUNCTION fnc_after_insert_in_favorites_inserts(ath_id bigint = 0) RETURNS TRIGGER AS $$trg_after_insert_in_favorites_insert$$
+CREATE OR REPLACE FUNCTION fnc_after_insert_in_favorites_inserts() RETURNS TRIGGER AS $trg_after_insert_in_favorites_insert$
+BEGIN
 UPDATE author_auditions
-SET = auditions = auditions + 1
-WHERE author_auditions.author_id = ath_id
-SELECT OLD.*;
+SET auditions = auditions + 1
+WHERE author_auditions.author_id = OLD.author_id;
 RETURN NULL;
 END;
-$$trg_after_new_author_insert$$ LANGUAGE plpgsql;
+$trg_after_insert_in_favorites_insert$ LANGUAGE 'plpgsql';
 
 CREATE TRIGGER trg_after_new_author_insert AFTER INSERT ON favorites_music
-	FOR EACH ROW EXECUTE FUNCTION fnc_after_insert_in_favorites_inserts(author.id)
+	FOR EACH ROW EXECUTE FUNCTION fnc_after_insert_in_favorites_inserts()
 ```
