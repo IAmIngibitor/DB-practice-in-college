@@ -326,4 +326,25 @@ $trg_after_insert_in_favorites_insert$ LANGUAGE 'plpgsql';
 
 CREATE TRIGGER trg_after_new_author_insert AFTER INSERT ON favorites_music
 	FOR EACH ROW EXECUTE FUNCTION fnc_after_insert_in_favorites_inserts()
+
+-- IN PROGRESS --
+
+CREATE OR REPLACE FUNCTION fnc_before_delete_in_users() RETURNS TRIGGER AS $trg_before_delete_in_users$
+BEGIN
+	IF EXISTS(SELECT ath.id FROM authors ath JOIN users ON OLD.users.id = ath.user_id WHERE ath.user_id = OLD.users.id) THEN
+		DELETE FROM music_list
+		USING authors, users
+		WHERE authors.user_id = OLD.users.id AND music_list.author_id = authors.id;
+		DELETE FROM authors
+		USING users
+		WHERE authors.user_id = OLD.users.id;
+		RETURN NULL;
+	ELSE
+		RETURN NULL;
+	END IF;
+END;
+$trg_before_delete_in_users$ LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE TRIGGER trg_before_delete_in_users BEFORE DELETE ON users
+	FOR EACH ROW EXECUTE FUNCTION fnc_before_delete_in_users();
 ```
