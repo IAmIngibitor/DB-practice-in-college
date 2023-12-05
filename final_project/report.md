@@ -20,9 +20,8 @@ CREATE TABLE users
 CREATE TABLE authors
 (
     id bigint PRIMARY KEY,
-    user_id bigint NOT NULL,
-    nickname varchar(32) NOT NULL,
-	FOREIGN KEY (user_id) REFERENCES users(id)
+    user_id bigint NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    nickname varchar(32) NOT NULL
 );
 
 CREATE TABLE music_genre
@@ -34,52 +33,42 @@ CREATE TABLE music_genre
 CREATE TABLE author_genres
 (
     id bigint PRIMARY KEY,
-    author_id bigint NOT NULL,
-    genre_id bigint NOT NULL,
-	FOREIGN KEY (author_id) REFERENCES authors(id),
-	FOREIGN KEY (genre_id) REFERENCES music_genre(id)
+    author_id bigint NOT NULL REFERENCES authors(id) ON DELETE CASCADE,
+    genre_id bigint NOT NULL REFERENCES music_genre(id) ON DELETE CASCADE 
 );
 
 CREATE TABLE music_list
 (
     id bigint PRIMARY KEY,
     title varchar NOT NULL,
-    genre_id bigint NOT NULL,
-    author_id bigint NOT NULL,
-	FOREIGN KEY (author_id) REFERENCES authors(id),
-	FOREIGN KEY (genre_id) REFERENCES music_genre(id)
+    genre_id bigint NOT NULL REFERENCES music_genre(id) ON DELETE CASCADE,
+    author_id bigint NOT NULL REFERENCES authors(id) ON DELETE CASCADE
 );
 
 CREATE TABLE favorites_music
 (
     id bigint PRIMARY KEY,
-    user_id bigint NOT NULL,
-    song_id bigint NOT NULL,
-	FOREIGN KEY (user_id) REFERENCES users(id),
-	FOREIGN KEY (song_id) REFERENCES music_list(id)
+    user_id bigint NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    song_id bigint NOT NULL REFERENCES music_list(id) ON DELETE CASCADE
 );
 
 CREATE TABLE playlists
 (
     id bigint PRIMARY KEY,
     title varchar NOT NULL,
-    user_id bigint NOT NULL,
-	FOREIGN KEY (user_id) REFERENCES users(id)
+    user_id bigint NOT NULL REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE playlist_music
 (
     id bigint PRIMARY KEY,
-    playlist_id bigint NOT NULL,
-    song_id bigint NOT NULL,
-	FOREIGN KEY (playlist_id) REFERENCES playlists(id),
-	FOREIGN KEY (song_id) REFERENCES music_list(id)
+    playlist_id bigint NOT NULL REFERENCES playlists(id) ON DELETE CASCADE,
+    song_id bigint NOT NULL REFERENCES music_list(id) ON DELETE CASCADE
 );
 
 CREATE TABLE author_auditions (
 	author_id bigint NOT NULL,
-	auditions bigint NOT NULL DEFAULT 0,
-	FOREIGN KEY (author_id) REFERENCES authors(id)
+	auditions bigint NOT NULL DEFAULT 0 REFERENCES authors(id) ON DELETE CASCADE
 );
 ```
 #### INSERTS VALUES
@@ -326,25 +315,4 @@ $trg_after_insert_in_favorites_insert$ LANGUAGE 'plpgsql';
 
 CREATE TRIGGER trg_after_new_author_insert AFTER INSERT ON favorites_music
 	FOR EACH ROW EXECUTE FUNCTION fnc_after_insert_in_favorites_inserts()
-
--- IN PROGRESS --
-
-CREATE OR REPLACE FUNCTION fnc_before_delete_in_users() RETURNS TRIGGER AS $trg_before_delete_in_users$
-BEGIN
-	IF EXISTS(SELECT ath.id FROM authors ath JOIN users ON OLD.users.id = ath.user_id WHERE ath.user_id = OLD.users.id) THEN
-		DELETE FROM music_list
-		USING authors, users
-		WHERE authors.user_id = OLD.users.id AND music_list.author_id = authors.id;
-		DELETE FROM authors
-		USING users
-		WHERE authors.user_id = OLD.users.id;
-		RETURN NULL;
-	ELSE
-		RETURN NULL;
-	END IF;
-END;
-$trg_before_delete_in_users$ LANGUAGE 'plpgsql';
-
-CREATE OR REPLACE TRIGGER trg_before_delete_in_users BEFORE DELETE ON users
-	FOR EACH ROW EXECUTE FUNCTION fnc_before_delete_in_users();
 ```
