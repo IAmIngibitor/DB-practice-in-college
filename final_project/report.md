@@ -265,12 +265,15 @@ CREATE MATERIALIZED VIEW mv_vip_subscribers AS
 #### SELECTS
 ```sql
 WITH tmp_song_top AS (
-	SELECT ml.title AS song_title, COUNT(*) FILTER (WHERE fvm.song_id = ml.id) AS added_to_favorites, ml.author_id FROM music_list ml
+	SELECT ml.title AS song_title, COUNT(*) FILTER (WHERE fvm.song_id = ml.id) AS added_to_favorites,
+		ml.author_id FROM music_list ml
 	JOIN favorites_music fvm ON fvm.song_id = ml.id
 	GROUP BY 1, 3
 	ORDER BY 2
 ), tmp_author_top AS (
-	SELECT ath.id AS author_id, ath.nickname AS author_nickname, COUNT(*) FILTER (WHERE ml.author_id = ath.id AND fvm.song_id = ml.id) AS songs_in_favorites FROM authors ath
+	SELECT ath.id AS author_id, ath.nickname AS author_nickname,
+		COUNT(*) FILTER (WHERE ml.author_id = ath.id AND fvm.song_id = ml.id) AS songs_in_favorites
+		FROM authors ath
 	JOIN music_list ml ON ml.author_id = ath.id
 	JOIN favorites_music fvm ON fvm.song_id = ml.id
 	GROUP BY 1, 2
@@ -279,7 +282,9 @@ WITH tmp_song_top AS (
 	SELECT tat.author_nickname, tst.song_title, tst.added_to_favorites  FROM tmp_author_top tat
 	JOIN tmp_song_top tst ON tst.author_id = tat.author_id
 ), tmp_limit_3 AS (
-	SELECT * FROM (SELECT tas.author_nickname, tas.song_title, row_number() over(partition by tas.author_nickname order by tas.added_to_favorites DESC) as rn FROM tmp_author_songs tas) ath_song
+	SELECT * FROM (SELECT tas.author_nickname, tas.song_title,
+			row_number() over(partition by tas.author_nickname order by tas.added_to_favorites DESC) as rn
+			FROM tmp_author_songs tas) ath_song
 	WHERE rn < 4
 )
 
