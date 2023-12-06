@@ -313,6 +313,6 @@ RETURN NULL;
 END;
 $trg_after_insert_in_favorites_insert$ LANGUAGE 'plpgsql';
 
-CREATE TRIGGER trg_after_new_author_insert AFTER INSERT ON favorites_music
+CREATE TRIGGER trg_after_insert_in_favorites_insert AFTER INSERT ON favorites_music
 	FOR EACH ROW EXECUTE FUNCTION fnc_after_insert_in_favorites_inserts()
 ```
